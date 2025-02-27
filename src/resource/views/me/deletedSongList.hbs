@@ -1,0 +1,160 @@
+<form id="restore-song-form" method="POST"></form>
+<form id="hard-delete-song-form" method="POST"></form>
+<form class="mt-4" name="container-deleted-forms" method="POST" action="/song/handle-form-action">
+    <h2>Deleted Song</h2>
+    <p class="text-card">Total: ({{dataBinCount}})</p>
+    <div class="mt-4 d-flex align-items-center bd-highlight mb-3">
+        <div class="form-group form-check" style="margin-bottom: 0;">
+            <input type="checkbox" class="form-check-input" id="checkbox-all">
+            <label class="form-check-label" for="checkbox-all">Select All</label>
+        </div>
+        <select class="form-control form-control-sm checkbox-select-all-options" name="action" required="required">
+            <option value="">-- Action --</option>
+            <option value="restore">Restore All Selection</option>
+            <option value="delete">Delete All Selection</option>
+        </select>
+        <button type="button" class="btn btn-primary btn-sm btn-check-all-submit" disabled>Apply</button>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col"></th>
+            <th scope="col">#</th>
+            <th scope="col">Name Song</th>
+            <th scope="col">Author</th>
+            <th scope="col">Video Id</th>
+            <th scope="col">Delete At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each data}}
+            <tr>
+                <td>
+                    <div class="form-group form-check" style="margin-bottom: 0;">
+                        <input type="checkbox" class="form-check-input" name="songSlugs[]" value="{{this.slug}}">
+                    </div>
+                </td>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.author}}</td>
+                <td>{{this.videoId}}</td>
+                <td>{{this.deletedAt}}</td>
+                <td><a href="" class="btn-restore" data-slug="{{this.slug}}">Restore</a></td>
+                <td><a href="" class="hard-delete" data-toggle="modal" data-slug="{{this.slug}}" data-target="#hard-delete-modal">Delete</a></td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="6" class="text-center">Empty Bin</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <!-- Modal Delete Confirm-->
+    <div class="modal fade" id="hard-delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are You Sure To Delete This Song Forever?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    This Song Can't Be Restore If You Delete From Bin!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn-hard-delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Submit All -->
+    <div class="modal fade" id="hard-all-submit-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are You Sure To Make This Decision?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are You Sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger btn-all-submit">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            
+            var restoreBtn = $('.btn-restore');
+            var restoreForm = document.forms['restore-song-form'];
+            var hardDeleteForms = document.forms['hard-delete-song-form'];
+            var songSlug;
+            var hardDeleteBtn = document.querySelector('.btn-hard-delete');
+            var checkBoxAll = $('#checkbox-all');
+            var checkBox = $('input[name="songSlugs[]"]');
+            var btnCheckAllSubmit = $('.btn-check-all-submit');
+            var containerForms = $('form[name="container-deleted-forms"]');
+            
+            //check box 
+            checkBoxAll.change(function(){
+                var isCheckAll = $(this).prop('checked');
+                checkBox.prop('checked', isCheckAll);
+                renderSubmitBtn();
+            })
+
+            checkBox.change(function(){
+                var isCheckAll = checkBox.length === $('input[name="songSlugs[]"]:checked').length;
+                checkBoxAll.prop('checked', isCheckAll);
+                renderSubmitBtn();
+            })
+
+            function renderSubmitBtn(){
+                var isCheckAll = $('input[name="songSlugs[]"]:checked').length;
+                if(isCheckAll > 0){
+                    btnCheckAllSubmit.attr('disabled', false);
+                    btnCheckAllSubmit.attr('data-toggle', 'modal');
+                    btnCheckAllSubmit.attr('data-target', '#hard-all-submit-modal');
+                }else{
+                    btnCheckAllSubmit.attr('disabled', true);
+                    btnCheckAllSubmit.removeAttr('data-toggle');
+                    btnCheckAllSubmit.removeAttr('data-target');
+                }
+            }
+            
+
+            containerForms.on('submit', function(e){
+                var isSubmitable = btnCheckAllSubmit.hasClass('disabled');
+                if(isSubmitable){
+                    e.preventDefault();
+                }
+            })
+
+            // end checkbox
+            restoreBtn.click(function(e) {
+                e.preventDefault();
+                songSlug = $(this).data('slug');
+                restoreForm.action = `/me/restore/` + songSlug + '?_method=PATCH';
+                restoreForm.submit();
+            });
+
+            $('#hard-delete-modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                songSlug = button.data('slug');
+            });
+
+            hardDeleteBtn.onclick = function(){
+                hardDeleteForms.action = `/me/hard-delete/` + songSlug + '?_method=DELETE';
+                hardDeleteForms.submit();
+            }
+        })
+    </script>

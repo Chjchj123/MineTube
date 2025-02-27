@@ -1,0 +1,82 @@
+<div class="mt-4">
+    <form method="GET" id="search-input-forms" class="form-inline my-2 my-lg-0" action="/">
+      <input id="search-input-song" class="form-control mr-sm-2 search-song-input" type="text" placeholder="Search Your Song Here" >
+    </form>
+    <div id="resultContainer" class="row">
+        {{#each data}}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card" style="margin-top: 16px;">
+                <a href="/song/{{this.slug}}">
+                    <img src="{{this.image}}" class="card-img-top" alt="{{this.image}}">
+                </a>
+                <div class="card-body">
+                    <a href="/song/{{this.slug}}">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <p class="card-text">{{this.author}}</p>
+                    <p class="card-text">{{this.description}}</p>
+                    <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
+                    <a href="/song/update-song/{{this.slug}}" class="btn btn-primary">Edit</a>
+                    <a href="/" class="btn btn-primary" data-toggle="modal" data-delete="{{this.slug}}" data-target="#delete-modal">Delete</a>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div>
+            <h1 class="empty-song">We Don't Have Any Song Here. <a href="/song/admin-show">Upload Your Songs Now!</a></h1>
+        </div>
+        {{/each}}
+        <!-- Modal -->
+        <div class="modal fade" id="delete-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are You Sure To Delete This Song?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-danger" id="delete-btn">Delete</button>
+                </div>
+                </div>
+            </div>
+            <form id="delete-song-form" method="POST">
+            </form>
+            <script>
+                // Delete Song
+                document.addEventListener('DOMContentLoaded', function(){
+                    var songId;
+                    var deleteForm = document.forms['delete-song-form'];
+                    var deleteBtn = document.getElementById('delete-btn');
+                    var searchInput = $('#search-input-song');
+                    $('#delete-modal').on('show.bs.modal', function (event) {
+                        var button = $(event.relatedTarget);
+                        songId = button.data('delete');
+                    });
+
+                    deleteBtn.onclick = function() {
+                        deleteForm.action = `/song/delete/` + songId + '?_method=DELETE';
+                        deleteForm.submit();
+                    };
+                    
+                    
+                    searchInput.on('input', function() {
+                        const query = this.value.trim();
+                        fetch(`/search?q=${encodeURIComponent(query)}`)
+                            .then(response => response.text())
+                            .then(html => {
+                                document.getElementById('resultContainer').innerHTML = html;
+                            })
+                            .catch(error => console.error('Lỗi tìm kiếm:', error));
+                    });
+                });
+
+            </script>
+        </div>
+    </div>
+</div>

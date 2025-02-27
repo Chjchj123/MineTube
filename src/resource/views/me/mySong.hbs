@@ -1,0 +1,70 @@
+<form method="POST" id="delete-song-form"></form>
+<div class="mt-4">
+    <h2>My Song</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name Song</th>
+            <th scope="col">Author</th>
+            <th scope="col">Video Id</th>
+            <th scope="col">Create At</th>
+            <th scope="col">Updated At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each data}}
+            <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.author}}</td>
+                <td>{{this.videoId}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>{{this.updatedAt}}</td>
+                <td><a href="/song/update-song/{{this.slug}}" class="btn-edit" data-slug="{{this.slug}}">Edit</a></td>
+                <td><a href="" class="delete" data-toggle="modal" data-slug="{{this.slug}}" data-target="#delete-modal">Delete</a></td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="6" class="text-center">You Aren't Upload Any Song Yet! <a href="/song/admin-show">Upload Here!</a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+<!-- Modal -->
+    <div class="modal fade" id="delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are You Sure To Delete This Song?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    This Song Will Be Move To Bin.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn-delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        var deleteBtn = $('.btn-delete');
+        var songSlug;
+        var deleteSongForm = document.forms['delete-song-form'];
+        $('#delete-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            songSlug = button.data('slug');
+        });
+        deleteBtn.click(function(){
+            deleteSongForm.action = `/song/delete/` + songSlug + '?_method=DELETE';
+            deleteSongForm.submit();
+        })
+    })
+</script>

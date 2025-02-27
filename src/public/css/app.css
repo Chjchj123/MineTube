@@ -1,0 +1,28 @@
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+
+.img-avatar {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin: 0 6px;
+  border: 1px solid #fff;
+}
+
+.empty-song {
+  font-weight: 300;
+  text-align: center;
+  margin: 30% 0 0 100px;
+}
+
+.checkbox-select-all-options {
+  width: 190px !important;
+  margin: 0 16px;
+}
+
+.search-song-input {
+  width: 100% !important;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../resource/scss/app.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22AACA;EACI;;;AAGJ;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE%22,%22file%22:%22app.css%22%7D */

@@ -1,0 +1,23 @@
+{{#each data}}
+    <div class="col-sm-6 col-lg-4">
+        <div class="card" style="margin-top: 16px;">
+            <a href="/song/{{this.slug}}">
+                <img src="{{this.image}}" class="card-img-top" alt="{{this.image}}">
+            </a>
+            <div class="card-body">
+                <a href="/song/{{this.slug}}">
+                    <h5 class="card-title">{{this.name}}</h5>
+                </a>
+                <p class="card-text">{{this.author}}</p>
+                <p class="card-text">{{this.description}}</p>
+                <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
+                <a href="/" class="btn btn-primary" data-toggle="modal" data-delete="{{this.slug}}" data-target="#delete-modal">Delete</a>
+                <a href="/song/update-song/{{this.slug}}" class="btn btn-primary">Edit</a>
+            </div>
+        </div>
+    </div>
+{{else}}
+    <div>
+        <h1 class="empty-song">We Can't Find Any Song Have That Result. <a href="/song/admin-show">Upload Your Songs Now!</a></h1>
+    </div>
+{{/each}}

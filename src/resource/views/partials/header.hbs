@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-right: 90px;">
+  <a class="navbar-brand" href="/">First Web NodeJs</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/song/admin-show">Create A New Song</a>
+      </li>
+      
+    </ul>
+    <div class="dropdown">
+      <a class="dropdown-toggle" style="color:#fff" href="#" data-toggle="dropdown" aria-expanded="false">
+        <img class="img-avatar" src="/img/476578425_970712731221915_7071582858846951356_n.jpg" alt="">
+        Quang Anh
+      </a>
+
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/me/my-song">Your Songs</a>
+        <a class="dropdown-item" href="/me/deleted-song/{{this.name}}">Deleted Song</a>
+        <a class="dropdown-item" href="/">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
