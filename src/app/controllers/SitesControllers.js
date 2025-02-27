@@ -5,7 +5,8 @@ class SitesController{
     // GET home 
     async index(req, res, next) {
         try {
-            const data = await Song.find({}).lean();
+            const searchQuery = req.query.q || '';
+            const data = await Song.find({ name: { $regex: searchQuery, $options: 'i' } }).lean();
             res.render('home', { data });
         } catch (error) {
             next(error);
