@@ -3,7 +3,7 @@ const path = require('path')
 const express = require('express');
 const app = express();
 const exHandlebar = require('express-handlebars').engine;
-const port = 5500;
+const port = 3000;
 const morgan = require('morgan');
 const methodOverride = require('method-override');
 const route = require('./routes');
@@ -32,4 +32,4 @@ app.set('views', path.join(__dirname, 'resource','views'));
 
 route(app);
 
-app.listen(port, () => console.log(`http://localhost::${port}`))
+app.listen(port,'0.0.0.0', () => console.log(`http://localhost::${port}`))
