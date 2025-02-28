@@ -7,7 +7,8 @@ class SongsController{
     async show(req, res, next){
         try {
             const data = await Song.findOne({ slug: req.params.slug}).lean();
-            res.render('song', { data });
+            const nextVideo = await Song.findOne({ _id: { $gt: data._id } }).lean();
+            res.render('song', { data, nextVideo});
         } catch (error) {
             next(error);
         }

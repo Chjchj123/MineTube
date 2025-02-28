@@ -1,27 +1,47 @@
-<div class="mt-4">
-    <div class="row">
-        <div class="col-lg-9">
-            <form method="GET" action="/">
-                <h2><button type="submit" class="btn btn-primary" style="margin-right: 16px;">Back</button>{{data.name}}</h2>
+<form id="form-to-nextSong" method="GET" action="/song/{{nextVideo.slug}}">
+    <div id="videoContainer" class="mt-4" data-next-video-id="{{nextVideo._id}}">
+        <div class="row">
+            <div class="col-lg-9">
+                <form method="GET" action="/">
+                    <h2><a href="/" class="btn btn-primary" style="margin-right: 16px;">Back</a>{{data.name}}</h2>
+                </form>
                 
-            </form>
-            
-            <iframe width="1167" height="656px" src="https://www.youtube.com/embed/{{data.videoId}}?si=F5j1kG0A3IoxClyl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <p class="card-text" style="margin-top: 16px; font-weight: 500; font-size: 20px;">{{data.description}}</p>
-            <button id="pipButton">Bật Picture-in-Picture</button>
-
+                <iframe id="youtubePlayer" width="1167" height="656px" 
+                    src="https://www.youtube.com/embed/{{data.videoId}}?enablejsapi=1&autoplay=1"
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
+                    gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
+                <p class="card-text" style="margin-top: 16px; font-weight: 500; font-size: 20px;">{{data.description}}</p>
+            </div>
         </div>
     </div>
-</div>
+</form>
+
 
 <script>
-    document.getElementById("pipButton").addEventListener("click", async function () {
-            const video = document.querySelector("iframe");
-            if (document.pictureInPictureEnabled) {
-                await video.requestPictureInPicture();
-            } else {
-                alert("Trình duyệt không hỗ trợ PiP.");
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtubePlayer', {
+            events: {
+                'onStateChange': onPlayerStateChange
             }
         });
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+            var formsNextSong = document.forms['form-to-nextSong'];
+            let nextVideoId = document.getElementById("videoContainer").getAttribute("data-next-video-id");   // Lấy ID video tiếp theo từ server
+            if (nextVideoId) {
+                formsNextSong.submit();
+            } else {
+                console.log("Không có video tiếp theo!");
+            }
+        }
+    }
 </script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
     

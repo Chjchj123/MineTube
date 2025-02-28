@@ -25,3 +25,10 @@
 .search-song-input{
   width: 100% !important;
 }
+
+@media (max-width: 739px) {
+  #youtubePlayer{
+    width: 95%;
+    height: 70%;
+  }
+}
