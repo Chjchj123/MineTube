@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        origin: "quanganhdeptrai.up.railway.app", // Thay bằng domain frontend của bạn
+        origin: "https://quanganhdeptrai.up.railway.app", // Thay bằng domain frontend của bạn
         credentials: true, // ✅ Cho phép gửi cookie
     })
 );
