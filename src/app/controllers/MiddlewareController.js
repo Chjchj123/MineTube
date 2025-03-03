@@ -13,7 +13,6 @@ class middlewareController {
                 next();
             });
         }else{
-            console.error("Token: "+ token);
             res.redirect('auth/login');
         }
     }
