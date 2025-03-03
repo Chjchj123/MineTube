@@ -38,8 +38,9 @@ class AuthController {
 
     async loginSubmit(req, res, next){
         try {
-            console.log(req.body.username);
             const username = await user.findOne({username: req.body.username}).lean();
+            const test = await user.find().lean();
+            console.log(test);
             if(!username){
                 res.redirect('/');
             }
@@ -72,9 +73,7 @@ class AuthController {
                     path: "/",
                 });
                 // res.json({username, accessToken});
-                console.log(req.cookies.refreshToken);
                 res.redirect('/');
-                
             }else{
                 res.redirect('back');
             }
