@@ -13,7 +13,7 @@ class middlewareController {
                 next();
             });
         }else{
-            console.error("JWT Verification Error:");
+            console.error("Token: "+ token);
             res.redirect('auth/login');
         }
     }
