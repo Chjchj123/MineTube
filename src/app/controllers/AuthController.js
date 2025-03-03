@@ -71,7 +71,6 @@ class AuthController {
                     path: "/",
                 });
                 // res.json({username, accessToken});
-                console.log("Set-Cookie Header:", res.getHeaders()["set-cookie"]);
                 res.redirect('/');
             }else{
                 res.json('LỖI TẠI ĐÂY');
