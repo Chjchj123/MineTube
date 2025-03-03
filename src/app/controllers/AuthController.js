@@ -8,7 +8,7 @@ class AuthController {
     async login(req, res, next){
         const username = await user.findOne({username: req.body.username}).lean();
         res.render('admin/auth', {layout: false});
-        console.log(user);
+        console.log(username);
     }
 
     register(req, res){
