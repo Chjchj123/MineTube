@@ -9,11 +9,13 @@ const methodOverride = require('method-override');
 const route = require('./routes');
 const db = require('./config/db');
 const cookieParser = require('cookie-parser');
-const cors = require('cors')
+const cors = require('cors');
+const helmet = require('helmet');
 
 // connect DB 
 db.connect();
 
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(methodOverride('_method'));
 app.use(morgan('combined'));
 app.use(express.static(path.join(__dirname, 'public')));
