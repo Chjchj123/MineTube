@@ -6,7 +6,9 @@ let refreshTokensArr = [];
 class AuthController {
 
     async login(req, res, next){
+        
         res.render('admin/auth', {layout: false});
+        console.log(req.body);
     }
 
     register(req, res){
