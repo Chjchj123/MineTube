@@ -1,12 +1,11 @@
 const user = require('../models/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
+
 let refreshTokensArr = [];
 class AuthController {
 
     async login(req, res, next){
-        res.json(mongoose.version);
         res.render('admin/auth', {layout: false});
     }
 
