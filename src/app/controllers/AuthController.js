@@ -6,9 +6,7 @@ let refreshTokensArr = [];
 class AuthController {
 
     async login(req, res, next){
-        const username = await user.findOne({username: req.body.username}).lean();
         res.render('admin/auth', {layout: false});
-        console.log(username);
     }
 
     register(req, res){
@@ -40,6 +38,7 @@ class AuthController {
 
     async loginSubmit(req, res, next){
         try {
+            console.log(req.body.username);
             const username = await user.findOne({username: req.body.username}).lean();
             if(!username){
                 res.redirect('/');
