@@ -6,6 +6,7 @@ let refreshTokensArr = [];
 class AuthController {
 
     async login(req, res, next){
+        console.log("Mongoose version:", mongoose.version);
         res.render('admin/auth', {layout: false});
     }
 
