@@ -67,7 +67,7 @@ class AuthController {
                 res.cookie("refreshToken", refreshToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "true",
-                    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+                    sameSite: "none",
                     path: "/",
                 });
                 // res.json({username, accessToken});
