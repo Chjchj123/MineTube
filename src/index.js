@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        origin: `'0.0.0.0'`, // Thay bằng domain frontend của bạn
+        origin: `http://localhost::${port}`, // Thay bằng domain frontend của bạn
         credentials: true, // ✅ Cho phép gửi cookie
     })
 );
