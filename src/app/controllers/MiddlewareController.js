@@ -13,7 +13,7 @@ class middlewareController {
                 next();
             });
         }else{
-            console.error("JWT Verification Error:", err.message);
+            console.error("JWT Verification Error:");
             res.redirect('auth/login');
         }
     }
