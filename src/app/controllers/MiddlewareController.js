@@ -7,13 +7,13 @@ class middlewareController {
         if(token){
             jwt.verify(token, "dqa20062004", (err, user)=>{
                 if(err){
-                    console.error("JWT Verification Error:", err.message);
                     return res.redirect('auth/login');
                 }
                 req.username = user;
                 next();
             });
         }else{
+            console.error("JWT Verification Error:", err.message);
             res.redirect('auth/login');
         }
     }
