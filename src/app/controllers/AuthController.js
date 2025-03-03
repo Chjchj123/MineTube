@@ -70,7 +70,7 @@ class AuthController {
                     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
                     path: "/",
                 });
-                res.json({username, accessToken});
+                // res.json({username, accessToken});
                 res.redirect('https://quanganhdeptrai.up.railway.app/');
             }else{
                 res.json('LỖI TẠI ĐÂY');
