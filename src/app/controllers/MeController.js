@@ -37,7 +37,7 @@ class MeController{
                 userId = decoded.id;
             });
             const user = await User.findOne({ _id: userId}).lean();
-            const data = await Song.findWithDeleted({ deleted: true, uploadBy: user.username }).lean();
+            const data = await Song.findWithDeleted({ deleted: true, uploadBy: user.name }).lean();
             const dataBinCount = await Song.countDocumentsWithDeleted({ deleted: true}).lean(); 
             res.render('me/deletedSongList', { data, dataBinCount, user});
         } catch (error) {

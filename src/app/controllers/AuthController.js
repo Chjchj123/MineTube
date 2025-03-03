@@ -66,11 +66,11 @@ class AuthController {
                 refreshTokensArr.push(refreshToken);
                 res.cookie("refreshToken", refreshToken, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === "true",
-                    sameSite: "none",
+                    secure: "true",
+                    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
                     path: "/",
                 });
-                // res.json({username, accessToken});
+                res.json(req.cookies.refreshToken);
                 res.redirect('/');
             }else{
                 res.json('LỖI TẠI ĐÂY');
