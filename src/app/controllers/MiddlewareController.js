@@ -8,13 +8,13 @@ class middlewareController {
             const accessToken = token.split(" ")[1];
             jwt.verify(token, "dqa20062004", (err, user)=>{
                 if(err){
-                    res.json('Lỗi tại đây')
                     res.redirect('auth/login');
                 }
                 req.username = user;
                 next();
             });
         }else{
+            res.json('Lỗi tại đây');
             res.redirect('auth/login');
         }
     }
