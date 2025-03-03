@@ -39,7 +39,6 @@ class AuthController {
     async loginSubmit(req, res, next){
         try {
             const username = await user.findOne({username: req.body.username}).lean();
-            console.log(test.username);
             if(!username){
                 res.json('Wrong Username');
             }
