@@ -17,7 +17,6 @@ class SitesController{
                 userId = decoded.id;
             });
             const user = await User.findOne({ _id: userId}).lean();
-            
             res.render('home', { data, user});
         } catch (error) {
             next(error);
