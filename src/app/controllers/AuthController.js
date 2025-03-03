@@ -6,9 +6,9 @@ let refreshTokensArr = [];
 class AuthController {
 
     async login(req, res, next){
-        
+        const username = await user.findOne({username: req.body.username}).lean();
         res.render('admin/auth', {layout: false});
-        console.log(req.body);
+        console.log(user);
     }
 
     register(req, res){
@@ -42,7 +42,7 @@ class AuthController {
         try {
             const username = await user.findOne({username: req.body.username}).lean();
             if(!username){
-                res.redirect('back');
+                res.redirect('/');
             }
             const validPassword = await bcrypt.compare(
                 req.body.password,
