@@ -1,5 +1,7 @@
 
 const Song = require('../models/song');
+const User = require('../models/users');
+const jwt = require('jsonwebtoken');
 
 class SongsController{
 
@@ -15,13 +17,34 @@ class SongsController{
     }
 
     // [GET]
-    adminShow(req, res){
-        res.render('admin/admin');
+    async adminShow(req, res){
+        const refreshToken = req.cookies.refreshToken;
+        var userId;
+        jwt.verify(refreshToken, "dqa20062004", (err, decoded) => {
+            if (err) {
+                return res.status(403).json({ message: "Invalid refresh token" });
+            }
+            userId = decoded.id;
+        });
+        const user = await User.findOne({ _id: userId}).lean();
+        res.render('admin/admin', {user});
     }
 
     // [POST]
-    store(req, res, next){
+    async store(req, res, next){
+        const refreshToken = req.cookies.refreshToken;
+        var userId;
+            jwt.verify(refreshToken, "dqa20062004", (err, decoded) => {
+                if (err) {
+                    return res.status(403).json({ message: "Invalid refresh token" });
+                }
+                userId = decoded.id;
+            });
+        const user = await User.findOne({ _id: userId}).lean();
+
+        
         const formData = req.body;
+        formData.uploadBy = user.name;
         formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hqdefault.jpg?sqp=-oaymwFACKgBEF5IWvKriqkDMwgBFQAAiEIYAdgBAeIBCggYEAIYBjgBQAHwAQH4Af4JgALQBYoCDAgAEAEYciBNKD4wDw==&rs=AOn4CLC1oj0KCXYtzfNW-C8DICMkqi6GCg`
         const songs = new Song(req.body)
         songs.save()
@@ -34,8 +57,22 @@ class SongsController{
     // [GET]
     async updateSong(req, res, next){
         try {
+            const refreshToken = req.cookies.refreshToken;
+            var userId;
+            jwt.verify(refreshToken, "dqa20062004", (err, decoded) => {
+                if (err) {
+                    return res.status(403).json({ message: "Invalid refresh token" });
+                }
+                userId = decoded.id;
+            });
+            const user = await User.findOne({ _id: userId}).lean();
             const data = await Song.findOne({ slug: req.params.slug}).lean();
-            res.render(`admin/updateSong`, { data });
+            if(user.name === data.uploadBy){
+                res.render(`admin/updateSong`, { data });
+            }else{
+                res.status(200).json("This is not your song you upload!");
+            }
+            
         } catch (error) {
             next(error);
         }

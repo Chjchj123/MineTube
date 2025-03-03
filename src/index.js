@@ -8,6 +8,8 @@ const morgan = require('morgan');
 const methodOverride = require('method-override');
 const route = require('./routes');
 const db = require('./config/db');
+const cookieParser = require('cookie-parser');
+const cors = require('cors')
 
 // connect DB 
 db.connect();
@@ -20,7 +22,13 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
-
+app.use(cookieParser());
+app.use(
+    cors({
+        origin: "http://localhost:3000", // Thay bằng domain frontend của bạn
+        credentials: true, // ✅ Cho phép gửi cookie
+    })
+);
 
 app.engine('hbs', exHandlebar({
     helpers: { sum: (a, b) => a + b },

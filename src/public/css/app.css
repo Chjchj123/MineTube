@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .selector-for-some-widget {
   box-sizing: content-box;
 }
@@ -31,5 +32,17 @@
     height: 70%;
   }
 }
+@media (min-width: 1024px) {
+  #liveToast {
+    width: 350px; /* Tăng chiều rộng */
+    font-size: 1.2rem; /* Tăng kích thước chữ */
+  }
+  #liveToast .toast-body {
+    padding: 20px; /* Tăng khoảng cách nội dung */
+  }
+  #liveToast .toast-header {
+    font-size: 1.3rem; /* Tăng chữ tiêu đề */
+  }
+}
 
-/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../resource/scss/app.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22AACA;EACI;;;AAGJ;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;IACE;IACA%22,%22file%22:%22app.css%22%7D */
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../resource/scss/app.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22;AACA;EACI;;;AAGJ;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;IACE;IACA;;;AAIJ;EACE;IACE;IACA;;EAGF;IACE;;EAGF;IACE%22,%22file%22:%22app.css%22%7D */

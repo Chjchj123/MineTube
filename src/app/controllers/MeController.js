@@ -1,13 +1,25 @@
 
 const Song = require('../models/song');
+const User = require('../models/users');
+const jwt = require('jsonwebtoken');
+
 
 class MeController{
 
     // GET show 
     async show(req, res, next){
         try {
-            const data = await Song.find({}).lean();
-            res.render('me/mySong', { data });
+            const refreshToken = req.cookies.refreshToken;
+            var userId;
+            jwt.verify(refreshToken, "dqa20062004", (err, decoded) => {
+                if (err) {
+                    return res.status(403).json({ message: "Invalid refresh token" });
+                }
+                userId = decoded.id;
+            });
+            const user = await User.findOne({ _id: userId}).lean();
+            const data = await Song.find({ uploadBy: user.username }).lean();
+            res.render('me/mySong', { data , user});
         } catch (error) {
             next(error);
         }
@@ -16,9 +28,18 @@ class MeController{
     // [GET]
     async deletedSongList(req, res, next){
         try {
-            const data = await Song.findWithDeleted({ deleted: true }).lean();
+            const refreshToken = req.cookies.refreshToken;
+            var userId;
+            jwt.verify(refreshToken, "dqa20062004", (err, decoded) => {
+                if (err) {
+                    return res.status(403).json({ message: "Invalid refresh token" });
+                }
+                userId = decoded.id;
+            });
+            const user = await User.findOne({ _id: userId}).lean();
+            const data = await Song.findWithDeleted({ deleted: true, uploadBy: user.username }).lean();
             const dataBinCount = await Song.countDocumentsWithDeleted({ deleted: true}).lean(); 
-            res.render('me/deletedSongList', { data, dataBinCount});
+            res.render('me/deletedSongList', { data, dataBinCount, user});
         } catch (error) {
             next(error);
         }

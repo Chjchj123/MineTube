@@ -1,8 +1,9 @@
 <div class="mt-4">
+    <h1 class="card-text">Hello, {{user.name}}</h1>
     <form method="GET" id="search-input-forms" class="form-inline my-2 my-lg-0" action="/">
       <input id="search-input-song" class="form-control mr-sm-2 search-song-input" type="text" placeholder="Search Your Song Here" >
     </form>
-    <div id="resultContainer" class="row">
+    <div id="resultContainer" data-username="{{user.name}}" class="row">
         {{#each data}}
         <div class="col-sm-6 col-lg-4">
             <div class="card" style="margin-top: 16px;">
@@ -13,11 +14,11 @@
                     <a href="/song/{{this.slug}}">
                         <h5 class="card-title">{{this.name}}</h5>
                     </a>
-                    <p class="card-text">{{this.author}}</p>
+                    <h6 class="card-text card-title">Upload By {{this.uploadBy}}</h6>
                     <p class="card-text">{{this.description}}</p>
                     <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
-                    <a href="/song/update-song/{{this.slug}}" class="btn btn-primary">Edit</a>
-                    <a href="/" class="btn btn-primary" data-toggle="modal" data-delete="{{this.slug}}" data-target="#delete-modal">Delete</a>
+                    <a href="/song/update-song/{{this.slug}}" data-upload="{{this.uploadBy}}" id="liveToastBtn" class="btn btn-primary edit-video">Edit</a>
+                    <a href="/" id="delete-Toast" class="btn btn-primary" data-toggle="modal" data-upload="{{this.uploadBy}}" data-delete="{{this.slug}}">Delete</a>
                 </div>
             </div>
         </div>
@@ -47,6 +48,7 @@
             </div>
             <form id="delete-song-form" method="POST">
             </form>
+
             <script>
                 // Delete Song
                 document.addEventListener('DOMContentLoaded', function(){
@@ -58,12 +60,36 @@
                         var button = $(event.relatedTarget);
                         songId = button.data('delete');
                     });
-
+                    
                     deleteBtn.onclick = function() {
                         deleteForm.action = `/song/delete/` + songId + '?_method=DELETE';
                         deleteForm.submit();
                     };
-                    
+
+                    $(document).on("click", "#liveToastBtn", function(event) {
+                        let uploadUsername = $("#resultContainer").attr("data-username");
+                        let uploadById = $(this).attr("data-upload");
+                        if(uploadById !== uploadUsername){
+                            event.preventDefault();
+                            $("#liveToast").toast('show');
+                        }else{
+                            console.log("Success");
+                        }
+                        console.log(uploadUsername + uploadById);
+                    });
+
+                    $(document).on("click", "#delete-Toast", function(event) {
+                        let uploadUsername = $("#resultContainer").attr("data-username");
+                        let uploadById = $(this).attr("data-upload");
+                        if(uploadById !== uploadUsername){
+                            event.preventDefault();
+                            $('#delete-Toast').removeAttr("data-target");
+                            $("#liveToast").toast('show');
+                        }else{
+                            $('#delete-Toast').attr("data-target", "#delete-modal");
+                            console.log(uploadUsername + uploadById);
+                        }
+                    });
                     
                     searchInput.on('input', function() {
                         const query = this.value.trim();
@@ -79,4 +105,18 @@
             </script>
         </div>
     </div>
+</div>
+<div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+    <div class="toast-header">
+      <strong class="mr-auto">Admin</strong>
+      <small>Just now</small>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      This is the your song you upload!
+    </div>
+  </div>
 </div>

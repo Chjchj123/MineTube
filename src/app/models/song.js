@@ -10,6 +10,7 @@ const Song = new Schema({
     image:{type: String},
     videoId: { type: String , require: true },
     slug: { type: String, slug: 'name'},
+    uploadBy: { type: String },
 },{
     timestamps: true
 });

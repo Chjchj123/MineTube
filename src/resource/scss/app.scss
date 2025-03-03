@@ -32,3 +32,18 @@
     height: 70%;
   }
 }
+
+@media (min-width: 1024px){
+  #liveToast {
+    width: 350px; /* Tăng chiều rộng */
+    font-size: 1.2rem; /* Tăng kích thước chữ */
+  }
+
+  #liveToast .toast-body {
+    padding: 20px; /* Tăng khoảng cách nội dung */
+  }
+
+  #liveToast .toast-header {
+    font-size: 1.3rem; /* Tăng chữ tiêu đề */
+  }
+}
