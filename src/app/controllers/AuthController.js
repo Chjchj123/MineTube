@@ -52,7 +52,7 @@ class AuthController {
                 },
                 "dqa0604",
                 {
-                    expiresIn: "9h"
+                    expiresIn: "2h"
                 } 
                 );
                 const refreshToken = jwt.sign({
