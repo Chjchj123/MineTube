@@ -71,7 +71,7 @@ class AuthController {
                     path: "/",
                 });
                 res.json({username, accessToken});
-                res.redirect('/');
+                res.redirect('https://quanganhdeptrai.up.railway.app/');
             }else{
                 res.json('LỖI TẠI ĐÂY');
             }
