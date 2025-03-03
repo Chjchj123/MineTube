@@ -73,7 +73,7 @@ class AuthController {
                 // res.json({username, accessToken});
                 res.redirect('/');
             }else{
-                res.redirect('back');
+                res.json('LỖI TẠI ĐÂY');
             }
         } catch (error) {
             next(error);
