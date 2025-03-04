@@ -18,7 +18,7 @@ class MeController{
                 userId = decoded.id;
             });
             const user = await User.findOne({ _id: userId}).lean();
-            const data = await Song.find({ uploadBy: user.username }).lean();
+            const data = await Song.find({ uploadBy: user.name }).lean();
             res.render('me/mySong', { data , user});
         } catch (error) {
             next(error);

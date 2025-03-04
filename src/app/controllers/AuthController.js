@@ -40,7 +40,7 @@ class AuthController {
         try {
             const username = await user.findOne({username: req.body.username}).lean();
             if(!username){
-                res.json('Wrong Username');
+                res.json('This Username is Already have on database');
             }
             const validPassword = await bcrypt.compare(
                 req.body.password,
