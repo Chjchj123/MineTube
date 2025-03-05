@@ -10,7 +10,18 @@ class SongsController{
         try {
             const data = await Song.findOne({ slug: req.params.slug}).lean();
             const nextVideo = await Song.findOne({ _id: { $gt: data._id } }).lean();
-            res.render('song', { data, nextVideo});
+            const refreshToken = req.cookies.refreshToken;
+            var userId;
+            
+            jwt.verify(refreshToken, "dqa20062004", (err, decoded) => {
+                if (err) {
+                    return res.status(403).json({ message: "Invalid refresh token" });
+                }
+                userId = decoded.id;
+            });
+            const user = await User.findOne({ _id: userId}).lean();
+
+            res.render('song', { data, nextVideo, user});
         } catch (error) {
             next(error);
         }
@@ -44,7 +55,7 @@ class SongsController{
 
         
         const formData = req.body;
-        formData.uploadBy = user.name;
+        formData.uploadBy = user.username;
         formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hqdefault.jpg?sqp=-oaymwFACKgBEF5IWvKriqkDMwgBFQAAiEIYAdgBAeIBCggYEAIYBjgBQAHwAQH4Af4JgALQBYoCDAgAEAEYciBNKD4wDw==&rs=AOn4CLC1oj0KCXYtzfNW-C8DICMkqi6GCg`
         const songs = new Song(req.body)
         songs.save()
@@ -67,8 +78,8 @@ class SongsController{
             });
             const user = await User.findOne({ _id: userId}).lean();
             const data = await Song.findOne({ slug: req.params.slug}).lean();
-            if(user.name === data.uploadBy){
-                res.render(`admin/updateSong`, { data });
+            if(user.username === data.uploadBy){
+                res.render(`admin/updateSong`, { data , user});
             }else{
                 res.status(200).json("This is not your song you upload!");
             }

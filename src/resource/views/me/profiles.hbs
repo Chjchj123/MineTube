@@ -1,0 +1,48 @@
+<link type="text/css" rel="stylesheet" href="/css/profile.css">
+<div class="mt-4">
+    <form method="POST" action="/me/upload-avatar" enctype="multipart/form-data">
+    <div class="card">
+        <div class="firstinfo"><img src="/uploads/{{user.avatar}}" />
+            <div class="profileinfo">
+                <h1 style="font-style: italic;">{{user.name}}</h1>
+                <h3>{{user.nickname}}</h3>
+                <p class="bio">{{user.bio}}</p>
+                <div class="input-group input-file-forms">
+                    <div class="custom-file">
+                        <input name="avatar" type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                        <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Change Avatar</button>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-edit-profile"><a href="/me/edit-profile/{{user._id}}" style="color: #fff; text-decoration: none;">Edit</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const username = "{{user.username}}";
+        document.querySelector('.custom-file-input').addEventListener('change', function(event) {
+            let fileName = event.target.files[0]?.name || "Choose file";
+            document.querySelector('.custom-file-label').textContent = fileName;
+        });
+        if (username === "dqa") {
+        const h3Element = document.querySelector(".profileinfo h1");
+        if (h3Element) {
+            const spanElement = document.createElement("span");
+            spanElement.textContent = " ADMIN"; // Nội dung thêm vào
+            spanElement.style.fontStyle = "italic";
+            spanElement.style.fontSize = "20px";
+            spanElement.classList.add("rgb-text");
+
+            h3Element.appendChild(spanElement); // Chèn vào bên trong thẻ <h3>
+        }
+    }
+
+    });
+    
+</script>

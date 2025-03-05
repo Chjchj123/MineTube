@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 
+
 // connect DB 
 db.connect();
 
@@ -38,7 +39,7 @@ app.engine('hbs', exHandlebar({
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resource','views'));
-
+app.use('/uploads', express.static('src/uploads'));
 
 route(app);
 

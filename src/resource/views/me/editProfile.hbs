@@ -1,0 +1,49 @@
+<div class="mt-4">
+    <h2 style="text-align: center;">Update A New Song</h2>
+    <form method="POST" action="/me/updated-profile/{{data._id}}?_method=PUT">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input name="name" type="text" value="{{data.name}}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="nickname">Slogan or NickName</label>
+            <input name="nickname" type="text" value="{{data.nickname}}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            <input name="bio" type="text" value="{{data.bio}}" class="form-control">
+        </div>
+
+        <!-- Button trigger modal -->
+        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Update
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Update Successful!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="backButton">Back</button>
+                </div>
+                </div>
+            </div>
+            <script>
+                document.getElementById('backButton').addEventListener('click', function() {
+                    window.location.href = '/';
+                });
+            </script>
+        </div>
+    </form>
+</div>

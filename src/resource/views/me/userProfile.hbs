@@ -1,0 +1,36 @@
+<link type="text/css" rel="stylesheet" href="/css/profile.css">
+<div class="mt-4">
+    <form method="POST" action="/me/upload-avatar" enctype="multipart/form-data">
+    <div class="card">
+        <div class="firstinfo"><img src="/uploads/{{userTarget.avatar}}" />
+            <div class="profileinfo">
+                <h1>{{userTarget.name}}</h1>
+                <h3>{{userTarget.nickname}}</h3>
+                <p class="bio">{{userTarget.bio}}</p>
+
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const username = "{{userTarget.username}}";
+
+        if (username === "dqa") {
+            const h3Element = document.querySelector(".profileinfo h1");
+            if (h3Element) {
+                const spanElement = document.createElement("span");
+                spanElement.textContent = " ADMIN"; // Nội dung thêm vào
+                spanElement.style.fontStyle = "italic";
+                spanElement.style.fontSize = "20px";
+                spanElement.classList.add("rgb-text");
+
+                h3Element.appendChild(spanElement); // Chèn vào bên trong thẻ <h3>
+            }
+        }
+
+    });
+    
+</script>

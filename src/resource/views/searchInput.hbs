@@ -6,9 +6,10 @@
             </a>
             <div class="card-body">
                 <a href="/song/{{this.slug}}">
-                    <h5 class="card-title">{{this.name}}</h5>
+                    <h5 class="card-title song-name">{{this.name}}</h5>
                 </a>
                 <p class="card-text">{{this.author}}</p>
+                <h6 class="card-title">Upload By: {{this.uploadBy}}</h6>
                 <p class="card-text">{{this.description}}</p>
                 <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
                 <a href="/" class="btn btn-primary" data-toggle="modal" data-delete="{{this.slug}}" data-target="#delete-modal">Delete</a>

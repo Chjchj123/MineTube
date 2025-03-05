@@ -11,6 +11,7 @@ const Song = new Schema({
     videoId: { type: String , require: true },
     slug: { type: String, slug: 'name'},
     uploadBy: { type: String },
+    onPlayList: { type: Boolean, default: false},
 },{
     timestamps: true
 });
