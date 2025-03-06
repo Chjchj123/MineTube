@@ -27,29 +27,31 @@
  {{!-- song --}}
 <div class="mt-4">
     <h1 class="text-title" style="text-align: center;">{{user.name}} Song</h1>
-    {{#each data}}
-    <div class="col-sm-6 col-lg-4">
-        <div class="card-song" style="margin-top: 16px;">
-            <a href="/song/{{this.slug}}">
-                <img src="{{this.image}}" class="card-img-top" alt="{{this.image}}">
-            </a>
-            <div class="card-body">
+    <div class="row">
+        {{#each data}}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card-song" style="margin-top: 16px;">
                 <a href="/song/{{this.slug}}">
-                            <h5 class="card-title">{{this.name}}</h5>
+                    <img src="{{this.image}}" class="card-img-top" alt="{{this.image}}">
                 </a>
-                <h6 class="card-text card-title">Upload By <a href="/me/profile/{{this.uploadBy}}">{{this.uploadBy}}</a></h6>
-                <p class="card-text">{{this.description}}</p>
-                <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
-                <a href="/song/update-song/{{this.slug}}" data-upload="{{this.uploadBy}}" id="liveToastBtn" class="btn btn-primary edit-video">Edit</a>
-                <a href="/" class="btn btn-primary delete-Toast" data-toggle="modal" data-target="#delete-modal" data-upload="{{this.uploadBy}}" data-delete="{{this.slug}}">Delete</a>
+                <div class="card-body">
+                    <a href="/song/{{this.slug}}">
+                                <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <h6 class="card-text card-title">Upload By <a href="/me/profile/{{this.uploadBy}}">{{this.uploadBy}}</a></h6>
+                    <p class="card-text">{{this.description}}</p>
+                    <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
+                    <a href="/song/update-song/{{this.slug}}" data-upload="{{this.uploadBy}}" id="liveToastBtn" class="btn btn-primary edit-video">Edit</a>
+                    <a href="/" class="btn btn-primary delete-Toast" data-toggle="modal" data-target="#delete-modal" data-upload="{{this.uploadBy}}" data-delete="{{this.slug}}">Delete</a>
+                </div>
             </div>
         </div>
+        {{else}}
+        <div>
+            <h1 class="empty-song">{{user.name}} Don't Have Any Song Here.</h1>
+        </div>
+        {{/each}}
     </div>
-    {{else}}
-    <div>
-        <h1 class="empty-song">{{user.name}} Don't Have Any Song Here.</h1>
-    </div>
-    {{/each}}
 </div>
 {{!-- modal  --}}
 <div class="modal fade" id="delete-modal">
