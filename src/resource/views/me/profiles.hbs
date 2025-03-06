@@ -1,4 +1,6 @@
 <link type="text/css" rel="stylesheet" href="/css/profile.css">
+<form id="delete-song-form" method="POST">
+</form>
 <div class="mt-4">
     <form method="POST" action="/me/upload-avatar" enctype="multipart/form-data">
     <div class="card">
@@ -22,29 +24,54 @@
     </div>
     </form>
 </div>
-        {{#each data}}
-        <div class="col-sm-6 col-lg-4">
-            <div class="card-song" style="margin-top: 16px;">
+ {{!-- song --}}
+<div class="mt-4">
+    <h1 class="text-title" style="text-align: center;">{{user.name}} Song</h1>
+    {{#each data}}
+    <div class="col-sm-6 col-lg-4">
+        <div class="card-song" style="margin-top: 16px;">
+            <a href="/song/{{this.slug}}">
+                <img src="{{this.image}}" class="card-img-top" alt="{{this.image}}">
+            </a>
+            <div class="card-body">
                 <a href="/song/{{this.slug}}">
-                    <img src="{{this.image}}" class="card-img-top" alt="{{this.image}}">
+                            <h5 class="card-title">{{this.name}}</h5>
                 </a>
-                <div class="card-body">
-                    <a href="/song/{{this.slug}}">
-                        <h5 class="card-title">{{this.name}}</h5>
-                    </a>
-                    <h6 class="card-text card-title">Upload By <a href="/me/profile/{{this.uploadBy}}">{{this.uploadBy}}</a></h6>
-                    <p class="card-text">{{this.description}}</p>
-                    <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
-                    <a href="/song/update-song/{{this.slug}}" data-upload="{{this.uploadBy}}" id="liveToastBtn" class="btn btn-primary edit-video">Edit</a>
-                    <a href="/" class="btn btn-primary delete-Toast" data-toggle="modal" data-upload="{{this.uploadBy}}" data-delete="{{this.slug}}">Delete</a>
-                </div>
+                <h6 class="card-text card-title">Upload By <a href="/me/profile/{{this.uploadBy}}">{{this.uploadBy}}</a></h6>
+                <p class="card-text">{{this.description}}</p>
+                <a href="/song/{{this.slug}}" class="btn btn-primary">Xem</a>
+                <a href="/song/update-song/{{this.slug}}" data-upload="{{this.uploadBy}}" id="liveToastBtn" class="btn btn-primary edit-video">Edit</a>
+                <a href="/" class="btn btn-primary delete-Toast" data-toggle="modal" data-target="#delete-modal" data-upload="{{this.uploadBy}}" data-delete="{{this.slug}}">Delete</a>
             </div>
         </div>
-        {{else}}
-        <div>
-            <h1 class="empty-song">{{user.name}} Don't Have Any Song Here.</h1>
+    </div>
+    {{else}}
+    <div>
+        <h1 class="empty-song">{{user.name}} Don't Have Any Song Here.</h1>
+    </div>
+    {{/each}}
+</div>
+{{!-- modal  --}}
+<div class="modal fade" id="delete-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Notification</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        {{/each}}
+        <div class="modal-body">
+            Are You Sure To Delete This Song?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+            <button type="button" class="btn btn-danger" id="delete-btn">Delete</button>
+        </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function(){
         const username = "{{user.username}}";
@@ -53,17 +80,28 @@
             document.querySelector('.custom-file-label').textContent = fileName;
         });
         if (username === "dqa") {
-        const h3Element = document.querySelector(".profileinfo h1");
-        if (h3Element) {
-            const spanElement = document.createElement("span");
-            spanElement.textContent = " ADMIN"; // Nội dung thêm vào
-            spanElement.style.fontStyle = "italic";
-            spanElement.style.fontSize = "20px";
-            spanElement.classList.add("rgb-text");
+            const h3Element = document.querySelector(".profileinfo h1");
+            if (h3Element) {
+                const spanElement = document.createElement("span");
+                spanElement.textContent = " ADMIN"; // Nội dung thêm vào
+                spanElement.style.fontStyle = "italic";
+                spanElement.style.fontSize = "20px";
+                spanElement.classList.add("rgb-text");
 
-            h3Element.appendChild(spanElement); // Chèn vào bên trong thẻ <h3>
+                h3Element.appendChild(spanElement); // Chèn vào bên trong thẻ <h3>
+            }
         }
-    }
-
+        var songId;
+        var deleteForm = document.forms['delete-song-form'];
+        var deleteBtn = document.getElementById('delete-btn');
+        $('#delete-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            songId = button.data('delete');
+        });
+                    
+        deleteBtn.onclick = function() {
+            deleteForm.action = `/song/delete/` + songId + '?_method=DELETE';
+            deleteForm.submit();
+        };
     });
 </script>
