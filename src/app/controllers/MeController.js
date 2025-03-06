@@ -19,7 +19,7 @@ class MeController{
                 userId = decoded.id;
             });
             const user = await User.findOne({ _id: userId}).lean();
-            const data = await Song.find({ uploadBy: user.name }).lean();
+            const data = await Song.find({ uploadBy: user.username }).lean();
             res.render('me/mySong', { data , user});
         } catch (error) {
             next(error);
@@ -38,7 +38,7 @@ class MeController{
                 userId = decoded.id;
             });
             const user = await User.findOne({ _id: userId}).lean();
-            const data = await Song.findWithDeleted({ deleted: true, uploadBy: user.name }).lean();
+            const data = await Song.findWithDeleted({ deleted: true, uploadBy: user.username }).lean();
             const dataBinCount = await Song.countDocumentsWithDeleted({ deleted: true}).lean(); 
             res.render('me/deletedSongList', { data, dataBinCount, user});
         } catch (error) {
@@ -76,7 +76,8 @@ class MeController{
                 userId = decoded.id;
             });
             const user = await User.findOne({ _id: userId}).lean();
-            res.render('me/profiles', {user});
+            const data = await Song.find({uploadBy: user.username}).lean();
+            res.render('me/profiles', {user, data});
         } catch (error) {
             next(error);
         }
@@ -107,8 +108,8 @@ class MeController{
 
     async showProfile(req, res, next){
         try {
-            const data = await Song.findOne({ uploadBy: req.params.slug}).lean();
-            const userTarget = await User.findOne({ username: data.uploadBy}).lean();
+            const dataSongSlug = await Song.findOne({ uploadBy: req.params.slug}).lean();
+            const userTarget = await User.findOne({ username: dataSongSlug.uploadBy}).lean();
             const refreshToken = req.cookies.refreshToken;
             var userId;
             jwt.verify(refreshToken, "dqa20062004", (err, decoded) => {
@@ -118,8 +119,9 @@ class MeController{
                 userId = decoded.id;
             });
             const user = await User.findOne({ _id: userId}).lean();
+            const data = await Song.find({uploadBy: user.username}).lean();
 
-            res.render('me/userProfile', {userTarget ,user});
+            res.render('me/userProfile', {userTarget ,user, data});
         } catch (error) {
             next(error);
         }
