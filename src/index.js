@@ -11,6 +11,8 @@ const db = require('./config/db');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 
 // connect DB 
@@ -43,4 +45,5 @@ app.use('/uploads', express.static('src/uploads'));
 
 route(app);
 
-app.listen(port,'0.0.0.0', () => console.log(`http://localhost::${port}`))
+io.on('connection', () => { /* … */ });
+server.listen(port,'0.0.0.0', () => console.log(`http://localhost::${port}`))
